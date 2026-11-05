@@ -94,7 +94,7 @@ ASGI_APPLICATION = 'config.asgi.application'
 import dj_database_url
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL and 'YOUR_NEON_PASSWORD' not in DATABASE_URL and 'xxxx' not in DATABASE_URL and 'cool-fog' not in DATABASE_URL:
+if DATABASE_URL and 'YOUR_NEON_PASSWORD' not in DATABASE_URL and 'npg_xxxx' not in DATABASE_URL:
     try:
         DATABASES = {
             'default': dj_database_url.config(
