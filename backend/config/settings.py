@@ -27,7 +27,12 @@ if str(BASE_DIR) not in sys.path:
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'sentinel-secure-development-secret-key-ft02-2026')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1')
 
-ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',') if h.strip()]
+ALLOWED_HOSTS = ['*'] if DEBUG else [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0,.onrender.com,.vercel.app').split(',') if h.strip()]
+if not DEBUG and '*' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.extend(['.onrender.com', '.vercel.app'])
+render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if render_host and render_host not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(render_host)
 
 # Application definition
 INSTALLED_APPS = [
@@ -57,6 +62,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+try:
+    import whitenoise  # noqa: F401
+    MIDDLEWARE.insert(2, 'whitenoise.middleware.WhiteNoiseMiddleware')
+except ImportError:
+    pass
 
 ROOT_URLCONF = 'config.urls'
 
@@ -155,7 +166,11 @@ SPECTACULAR_SETTINGS = {
 
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',') if o.strip()]
-CORS_ALLOW_ALL_ORIGINS = DEBUG  # Permissive in dev, strict in prod
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'True').lower() in ('true', '1')
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.onrender\.com$",
+]
 CORS_ALLOW_CREDENTIALS = True
 
 # Upload limits (50 MB)
