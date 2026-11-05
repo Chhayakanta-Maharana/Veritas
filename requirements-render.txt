@@ -32,3 +32,4 @@ pyyaml>=6.0
 timm>=0.9.12
 albumentations>=1.4.0
 onnxruntime>=1.17.0
+

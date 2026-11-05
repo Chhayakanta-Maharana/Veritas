@@ -16,3 +16,4 @@ services:
         generateValue: true
       - key: CORS_ALLOW_ALL_ORIGINS
         value: "True"
+
