@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
       {error && (
         <div className="p-4 rounded-xl border border-red-800/80 bg-red-950/40 text-red-400 font-mono text-xs">
-          <b>TELEMETRY ERROR:</b> {error} (Ensure Django backend is running at http://localhost:8000)
+          <b>TELEMETRY ERROR:</b> {error} (Ensure Veritas Sentinel API backend is running at https://veritas-fyw8.onrender.com)
         </div>
       )}
 

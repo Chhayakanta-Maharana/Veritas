@@ -10,7 +10,11 @@ import {
   ModelInfo,
 } from '@/types/forensics';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? 'https://veritas-fyw8.onrender.com/api'
+    : 'http://localhost:8000/api');
 
 class ApiClient {
   private baseUrl: string;
