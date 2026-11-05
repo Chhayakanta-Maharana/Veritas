@@ -1,0 +1,36 @@
+# Training Configuration for Doomsday Sentinel Model Training
+training:
+  experiment_name: "sentinel_efficientnet_b0_v1"
+  model_architecture: "efficientnet_b0"
+  num_classes: 1
+  pretrained: true
+  
+  hyperparameters:
+    epochs: 10
+    batch_size: 32
+    learning_rate: 0.0003
+    weight_decay: 0.0001
+    optimizer: "AdamW"
+    scheduler: "CosineAnnealingLR"
+    min_lr: 0.000001
+    loss_function: "BCEWithLogitsLoss"
+    pos_weight: null # computed dynamically if class imbalance exists
+    
+  device: "cuda" # fallback to cpu if cuda unavailable
+  mixed_precision: true
+  early_stopping:
+    enabled: true
+    patience: 3
+    metric: "val_loss"
+    mode: "min"
+    
+  checkpointing:
+    save_dir: "artifacts/model"
+    best_model_name: "best_model.pth"
+    save_best_only: true
+    
+  smoke_test:
+    enabled: false
+    max_samples_per_split: 50
+    epochs: 1
+    batch_size: 8

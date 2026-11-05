@@ -1,0 +1,480 @@
+openapi: 3.0.3
+info:
+  title: Doomsday Sentinel Forensics API
+  version: 1.0.0
+  description: AI-Powered Deepfake & Synthetic Media Forensics REST API (Future Tech
+    FT-02)
+paths:
+  /api/analyses/:
+    get:
+      operationId: analyses_list
+      description: Returns paginated list of forensic analyses with filtering options.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - analyses
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnalysisSummaryList'
+          description: ''
+  /api/analyses/{id}/:
+    get:
+      operationId: analyses_retrieve
+      description: Retrieves or deletes a specific forensic analysis record.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - analyses
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
+          description: ''
+    delete:
+      operationId: analyses_destroy
+      description: Retrieves or deletes a specific forensic analysis record.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - analyses
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/analyze/image/:
+    post:
+      operationId: analyze_image_create
+      description: |-
+        Performs forensic analysis on uploaded image: face detection, deep learning inference,
+        Grad-CAM sensitivity mapping, and database persistence.
+      tags:
+      - analyze
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ImageUpload'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
+          description: ''
+        '400':
+          description: Invalid upload
+  /api/analyze/video/:
+    post:
+      operationId: analyze_video_create
+      description: |-
+        Performs forensic analysis on uploaded video by extracting frames, running neural inference,
+        identifying suspicious frames, and aggregating temporal scores.
+      tags:
+      - analyze
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VideoUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VideoUpload'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
+          description: ''
+        '400':
+          description: Invalid video upload
+  /api/dashboard/stats/:
+    get:
+      operationId: dashboard_stats_retrieve
+      description: Returns high-level statistics, detection metrics, and recent activity
+        for the forensic dashboard.
+      tags:
+      - dashboard
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardStats'
+          description: ''
+  /api/health/:
+    get:
+      operationId: health_retrieve
+      description: Returns system, hardware, inference engine, and database operational
+        status.
+      tags:
+      - health
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: System healthy
+  /api/model/info/:
+    get:
+      operationId: model_info_retrieve
+      description: Returns architecture, input shape, labels, and verified evaluation
+        metrics.
+      tags:
+      - model
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelInfo'
+          description: ''
+  /api/reports/{id}/:
+    get:
+      operationId: reports_retrieve
+      description: Generates and downloads a formal forensic PDF inspection report.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - reports
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Analysis:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        media_type:
+          $ref: '#/components/schemas/MediaTypeEnum'
+        original_filename:
+          type: string
+          maxLength: 255
+        prediction:
+          $ref: '#/components/schemas/PredictionEnum'
+        score:
+          type: number
+          format: double
+          description: Predicted probability of synthetic manipulation (0.0 to 1.0)
+        confidence:
+          type: number
+          format: double
+          description: Calibrated classification confidence
+        threshold:
+          type: number
+          format: double
+          description: Validated decision threshold
+        model_version:
+          type: string
+          maxLength: 64
+        processing_status:
+          $ref: '#/components/schemas/ProcessingStatusEnum'
+        processing_duration:
+          type: number
+          format: double
+          description: Latency in ms (images) or seconds (videos)
+        frame_statistics:
+          nullable: true
+          description: Video frame-level aggregations
+        face_detection:
+          nullable: true
+          description: Bounding box and face detection metadata
+        limitations:
+          description: Forensic uncertainty or limitation statements
+        error_category:
+          type: string
+          maxLength: 64
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalysisArtifact'
+          readOnly: true
+        explanation_available:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - artifacts
+      - created_at
+      - explanation_available
+      - id
+      - media_type
+      - model_version
+      - prediction
+      - score
+    AnalysisArtifact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        artifact_type:
+          type: string
+          maxLength: 64
+        file_path:
+          type: string
+          maxLength: 512
+        checksum:
+          type: string
+          maxLength: 64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - artifact_type
+      - created_at
+      - file_path
+      - id
+    AnalysisSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        media_type:
+          $ref: '#/components/schemas/MediaTypeEnum'
+        original_filename:
+          type: string
+          maxLength: 255
+        prediction:
+          $ref: '#/components/schemas/PredictionEnum'
+        score:
+          type: number
+          format: double
+          description: Predicted probability of synthetic manipulation (0.0 to 1.0)
+        confidence:
+          type: number
+          format: double
+          description: Calibrated classification confidence
+        threshold:
+          type: number
+          format: double
+          description: Validated decision threshold
+        processing_status:
+          $ref: '#/components/schemas/ProcessingStatusEnum'
+        processing_duration:
+          type: number
+          format: double
+          description: Latency in ms (images) or seconds (videos)
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - media_type
+      - prediction
+      - score
+    DashboardStats:
+      type: object
+      properties:
+        total_analyses:
+          type: integer
+        real_count:
+          type: integer
+        fake_count:
+          type: integer
+        uncertain_count:
+          type: integer
+        average_latency_ms:
+          type: number
+          format: double
+        active_model_version:
+          type: string
+        recent_analyses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalysisSummary'
+      required:
+      - active_model_version
+      - average_latency_ms
+      - fake_count
+      - real_count
+      - recent_analyses
+      - total_analyses
+      - uncertain_count
+    ImageUpload:
+      type: object
+      properties:
+        image:
+          type: string
+          format: uri
+          description: Image file (JPG, PNG, WEBP) max 50MB
+      required:
+      - image
+    MediaTypeEnum:
+      enum:
+      - image
+      - video
+      type: string
+      description: |-
+        * `image` - Image Media
+        * `video` - Video Media
+    ModelInfo:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_version:
+          type: string
+        architecture:
+          type: string
+        input_shape:
+          type: array
+          items: {}
+        decision_threshold:
+          type: number
+          format: double
+        labels:
+          type: object
+          additionalProperties: {}
+        evaluation_summary:
+          type: object
+          additionalProperties: {}
+        onnx_available:
+          type: boolean
+        device:
+          type: string
+      required:
+      - architecture
+      - decision_threshold
+      - device
+      - evaluation_summary
+      - input_shape
+      - labels
+      - model_name
+      - model_version
+      - onnx_available
+    PaginatedAnalysisSummaryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalysisSummary'
+    PredictionEnum:
+      enum:
+      - REAL
+      - FAKE
+      - UNCERTAIN
+      type: string
+      description: |-
+        * `REAL` - Authentic / Real Media
+        * `FAKE` - Deepfake / Manipulated Media
+        * `UNCERTAIN` - Inconclusive / Uncertain Evidence
+    ProcessingStatusEnum:
+      enum:
+      - pending
+      - completed
+      - failed
+      type: string
+      description: |-
+        * `pending` - Pending Analysis
+        * `completed` - Analysis Completed
+        * `failed` - Processing Failed
+    VideoUpload:
+      type: object
+      properties:
+        video:
+          type: string
+          format: uri
+          description: Video file (MP4, AVI, MOV) max 50MB
+      required:
+      - video
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

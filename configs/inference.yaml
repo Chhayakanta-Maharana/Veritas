@@ -1,0 +1,27 @@
+# Inference and Video Processing Configuration
+inference:
+  model_path: "artifacts/model/best_model.pth"
+  onnx_model_path: "artifacts/model/deepfake_detector.onnx"
+  metadata_path: "artifacts/metadata/model_metadata.json"
+  use_onnx: false # default to PyTorch, switchable if verified
+  device: "cuda"
+  
+  threshold: 0.50 # tuned during validation
+  input_size: [224, 224]
+  
+  face_detection:
+    enabled: true
+    method: "haarcascade"
+    margin_ratio: 0.2
+    fallback_policy: "center_crop"
+    
+  video_processing:
+    max_duration_seconds: 60
+    max_file_size_mb: 50
+    sampling_fps: 2 # 2 frames per second
+    max_frames_to_process: 60
+    aggregation_method: "suspicious_tail_mean" # top 20% most suspicious frames
+    uncertainty_margin: 0.10 # threshold +/- 0.10 indicates uncertain forensic state
+    suspicious_threshold: 0.65
+    save_suspicious_frames: true
+    max_suspicious_frames_stored: 5

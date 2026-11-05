@@ -1,0 +1,147 @@
+{
+  "dataset_name": "Doomsday-Sentinel-Forensics-Benchmark",
+  "total_samples": 1200,
+  "total_source_identities": 40,
+  "integrity_metrics": {
+    "missing_files_count": 0,
+    "duplicate_files_count": 0,
+    "corrupted_files_count": 0,
+    "sha256_verified_files": 1200
+  },
+  "class_balance": {
+    "REAL_count": 600,
+    "FAKE_count": 600,
+    "REAL_percentage": 50.0,
+    "FAKE_percentage": 50.0
+  },
+  "split_distribution": {
+    "train": 840,
+    "val": 180,
+    "test": 180
+  },
+  "source_distribution": {
+    "FaceForensics_Benchmark": 420,
+    "CelebDF_Subset": 390,
+    "SyntheticDiffusion_v2": 390
+  },
+  "manipulation_distribution": {
+    "authentic": 600,
+    "faceswap": 210,
+    "gan_stylegan": 195,
+    "diffusion_inpainting": 195
+  },
+  "missing_values": {
+    "counts": {
+      "sample_id": 0,
+      "file_path": 0,
+      "media_type": 0,
+      "label": 0,
+      "source_dataset": 0,
+      "source_video_id": 0,
+      "manipulation_type": 0,
+      "face_detection_status": 0,
+      "preprocessing_status": 0,
+      "failure_reason": 1200,
+      "width": 0,
+      "height": 0,
+      "aspect_ratio": 0,
+      "file_size_kb": 0,
+      "laplacian_variance": 0,
+      "mean_luminance": 0,
+      "split": 0
+    },
+    "percentages": {
+      "sample_id": 0.0,
+      "file_path": 0.0,
+      "media_type": 0.0,
+      "label": 0.0,
+      "source_dataset": 0.0,
+      "source_video_id": 0.0,
+      "manipulation_type": 0.0,
+      "face_detection_status": 0.0,
+      "preprocessing_status": 0.0,
+      "failure_reason": 100.0,
+      "width": 0.0,
+      "height": 0.0,
+      "aspect_ratio": 0.0,
+      "file_size_kb": 0.0,
+      "laplacian_variance": 0.0,
+      "mean_luminance": 0.0,
+      "split": 0.0
+    }
+  },
+  "iqr_statistical_analysis": {
+    "width": {
+      "Q1": 256.0,
+      "Q3": 256.0,
+      "IQR": 0.0,
+      "lower_bound": 256.0,
+      "upper_bound": 256.0,
+      "train_outlier_count": 0,
+      "train_outlier_pct": 0.0,
+      "dataset_outlier_count": 0,
+      "dataset_outlier_pct": 0.0,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    },
+    "height": {
+      "Q1": 256.0,
+      "Q3": 256.0,
+      "IQR": 0.0,
+      "lower_bound": 256.0,
+      "upper_bound": 256.0,
+      "train_outlier_count": 0,
+      "train_outlier_pct": 0.0,
+      "dataset_outlier_count": 0,
+      "dataset_outlier_pct": 0.0,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    },
+    "aspect_ratio": {
+      "Q1": 1.0,
+      "Q3": 1.0,
+      "IQR": 0.0,
+      "lower_bound": 1.0,
+      "upper_bound": 1.0,
+      "train_outlier_count": 0,
+      "train_outlier_pct": 0.0,
+      "dataset_outlier_count": 0,
+      "dataset_outlier_pct": 0.0,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    },
+    "file_size_kb": {
+      "Q1": 103.4675,
+      "Q3": 104.88,
+      "IQR": 1.4125,
+      "lower_bound": 101.3488,
+      "upper_bound": 106.9987,
+      "train_outlier_count": 264,
+      "train_outlier_pct": 31.43,
+      "dataset_outlier_count": 377,
+      "dataset_outlier_pct": 31.42,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    },
+    "laplacian_variance": {
+      "Q1": 692.805,
+      "Q3": 744.1375,
+      "IQR": 51.3325,
+      "lower_bound": 615.8063,
+      "upper_bound": 821.1363,
+      "train_outlier_count": 150,
+      "train_outlier_pct": 17.86,
+      "dataset_outlier_count": 210,
+      "dataset_outlier_pct": 17.5,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    },
+    "mean_luminance": {
+      "Q1": 61.4675,
+      "Q3": 69.1375,
+      "IQR": 7.67,
+      "lower_bound": 49.9625,
+      "upper_bound": 80.6425,
+      "train_outlier_count": 6,
+      "train_outlier_pct": 0.71,
+      "dataset_outlier_count": 10,
+      "dataset_outlier_pct": 0.83,
+      "forensic_policy": "Retained without deletion; variance represents essential manipulation artifacts."
+    }
+  }
+}

@@ -1,0 +1,5 @@
+SHA-256 Checksums for Doomsday Sentinel Artifacts
+============================================================
+best_model.pth:           214ffc521c70045fce72e29a949bcbbaea1f091647a7c5ee2e977de2f86009bf
+deepfake_detector.onnx:   b951fbe2c50f368872fa48d888bfec1b56e79cd1d6f316d3ecb4cfc95f25ff60
+model_metadata.json:      464b100222a1b721b1ac5097634aa77b4eb9066f73c76c70d227f51fa20d55e4

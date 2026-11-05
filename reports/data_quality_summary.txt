@@ -1,0 +1,30 @@
+======================================================================
+DOOMSDAY SENTINEL — DATA QUALITY AUDIT & INTEGRITY SUMMARY
+======================================================================
+
+Total Registered Samples: 1200
+Total Source Video Identities: 40
+Class Balance: REAL (0) = 600 (50.0%) | FAKE (1) = 600 (50.0%)
+Missing Files: 0 | Corrupted Files: 0 | Hash Duplicates: 0
+
+Splits (Strict Grouping by Identity):
+  - train: 840 samples (70.0%)
+  - val: 180 samples (15.0%)
+  - test: 180 samples (15.0%)
+
+Manipulation Types:
+  - authentic: 600 samples
+  - faceswap: 210 samples
+  - gan_stylegan: 195 samples
+  - diffusion_inpainting: 195 samples
+
+IQR Statistical Analysis on Training Split:
+  - width: Q1=256.0, Q3=256.0, IQR=0.0, Outliers=0 (0.0%)
+  - height: Q1=256.0, Q3=256.0, IQR=0.0, Outliers=0 (0.0%)
+  - aspect_ratio: Q1=1.0, Q3=1.0, IQR=0.0, Outliers=0 (0.0%)
+  - file_size_kb: Q1=103.4675, Q3=104.88, IQR=1.4125, Outliers=264 (31.43%)
+  - laplacian_variance: Q1=692.805, Q3=744.1375, IQR=51.3325, Outliers=150 (17.86%)
+  - mean_luminance: Q1=61.4675, Q3=69.1375, IQR=7.67, Outliers=6 (0.71%)
+
+Outlier Handling Decision: All observations retained. In forensic computer vision,
+unusual frequency variations or high-frequency sharpness discrepancies are vital signals.
