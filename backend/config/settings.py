@@ -99,10 +99,12 @@ if DATABASE_URL and 'YOUR_NEON_PASSWORD' not in DATABASE_URL and 'npg_xxxx' not 
         DATABASES = {
             'default': dj_database_url.config(
                 default=DATABASE_URL,
-                conn_max_age=600,
+                conn_max_age=0,
                 ssl_require=True
             )
         }
+        # Neon PgBouncer pooler requires disabling server-side cursors
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
         print("[Database] Configured for Neon Serverless PostgreSQL.")
     except Exception as e:
         print(f"[Database] Warning: Failed to parse DATABASE_URL ({e}). Falling back to SQLite.")
