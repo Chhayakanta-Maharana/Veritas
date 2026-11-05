@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -15,7 +15,7 @@ import {
 import { api } from '@/lib/api';
 import SentinelLogo from '@/components/SentinelLogo';
 
-export default function UnifiedLoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect');
@@ -174,5 +174,20 @@ export default function UnifiedLoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function UnifiedLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 min-h-[60vh] flex items-center justify-center bg-[#060813] text-slate-400 font-mono text-xs">
+          <div className="w-8 h-8 rounded-full border-2 border-red-500 border-t-transparent animate-spin mr-3" />
+          <span>INITIALIZING GATEWAY...</span>
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }
