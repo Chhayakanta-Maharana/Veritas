@@ -6,9 +6,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
+def root_health_view(request):
+    return JsonResponse({
+        "status": "online",
+        "service": "Veritas Sentinel Forensics API",
+        "health": "/api/health/",
+        "docs": "/api/docs/"
+    })
+
 urlpatterns = [
+    path('', root_health_view, name='root-health'),
     path('admin/', admin.site.urls),
     path('api/', include('apps.forensics.urls')),
     

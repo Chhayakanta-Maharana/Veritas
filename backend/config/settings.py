@@ -27,12 +27,7 @@ if str(BASE_DIR) not in sys.path:
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'sentinel-secure-development-secret-key-ft02-2026')
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1')
 
-ALLOWED_HOSTS = ['*'] if DEBUG else [h.strip() for h in os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0,.onrender.com,.vercel.app').split(',') if h.strip()]
-if not DEBUG and '*' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.extend(['.onrender.com', '.vercel.app'])
-render_host = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if render_host and render_host not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append(render_host)
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
